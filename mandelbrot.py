@@ -75,16 +75,24 @@ def loadandplot(fileName,n,nX,nY):
     for i in range(n):
         doplot(loadnumbers(fileName,i,nX,nY),0,0,1,1,i)
     
-def domultiplemandel(nX,nY,cX,cY,lX,lY,MAX_ITERATIONS,frames):
-    for i in range(500,frames):
-        [lX,lY] = [0.75*lX,0.75*lY] # Total length of the X, Y axis
+def domultiplemandel(nX,nY,cX,cY,lX0,lY0,MAX_ITERATIONS,frames):
+    for i in range(407,frames):
+        [lX,lY] = [pow(0.75,i)*lX0,pow(0.75,i)*lY0] # Total length of the X, Y axis
         [dX,dY] = [lX/nX,lY/nY] # distance between neighbouring points
         ans = domandel(nX,nY,cX,cY,dX, dY, MAX_ITERATIONS)
         #doplot(ans,cX,cY,lX,lY,i)
-        foldername = "/data/Mandel002"
+        foldername = "./data/Mandel002"
         savenumbers(ans,i,nX,nY,foldername)
         #MAX_ITERATIONS +=  10
         print("Finished Mandel " +str(i)+" for l = " + str(lX))
+
+def dohistogram(fileName, i, nX,nY):
+    tohistogram = loadnumbers(fileName,i,nX,nY)
+    hist, bins = np.histogram(tohistogram, bins=50)
+    width = 0.7 * (bins[1] - bins[0])
+    center = (bins[:-1] + bins[1:]) / 2
+    plt.bar(center, hist, align='center', width=width)
+    plt.show()
 
 def main():
     # Start Conditions
@@ -97,6 +105,8 @@ def main():
     #doplot(abc,cX,cY,lX,lY,0)
     #print(abc)
 
-main()
-#loadandplot('MandelNumbers',100,500,500)
-os.system("shutdown now")
+#main()
+#loadandplot('./data/Mandel002/MandelNumbers',300,500,500)
+#doplot(loadnumbers('./data/Mandel002/MandelNumbers',95,500,500),0,0,1,1,95)
+dohistogram('./data/Mandel002/MandelNumbers',55,500,500)
+#os.system("shutdown now")
